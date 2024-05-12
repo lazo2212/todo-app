@@ -1,7 +1,8 @@
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { reactive, onMounted } from 'vue';
 import Header from './components/Header.vue';
 import TodoInputTask from './components/TodoInputTask.vue';
+import TodoList from './components/TodoList.vue';
 
 // *****  THEME LOGIC *****
 let colorTheme = reactive({
@@ -10,7 +11,10 @@ let colorTheme = reactive({
   btnClr: 'light',
 });
 
-onMounted(() => getTheme());
+onMounted(() => {
+  getTheme();
+  getTodos();
+});
 
 function getTheme() {
   let theme = JSON.parse(localStorage.getItem('colorTheme'));
@@ -29,17 +33,29 @@ function toggleTheme() {
   setTheme();
 }
 //  *****  TODO TASKS LOGIC  *****
-const todos = reactive([
-  { id: 1, text: 'Prvi zadatak' },
-  { id: 2, text: 'Drugi zadatak' },
-]);
+const todos = reactive([]);
+
+function getTodos() {
+  let newTodos = JSON.parse(localStorage.getItem('todos'));
+  Object.assign(todos, newTodos);
+}
+
+function setTodos() {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
 
 function addTodo(todoInputText) {
   if (todoInputText === '') {
     return;
   }
 
-  todos.push({ id: todos.length, text: todoInputText });
+  todos.push({ text: todoInputText });
+  setTodos();
+}
+
+function deleteTodo(index) {
+  todos.splice(index, 1);
+  setTodos();
 }
 </script>
 
@@ -49,22 +65,12 @@ function addTodo(todoInputText) {
     :class="`bg-${colorTheme.themeClr} text-${colorTheme.textClr}`"
   >
     <Header :color-theme="colorTheme" :toggle-theme="toggleTheme"></Header>
+
     <TodoInputTask
       :color-theme="colorTheme"
       :add-todo="addTodo"
     ></TodoInputTask>
 
-    <div class="container">
-      <ul class="list-group">
-        <li
-          class="list-group-item d-flex justify-content-between"
-          v-for="todo in todos"
-          :key="todo.id"
-        >
-          {{ todo.text }}
-          <button class="btn btn-sm btn-danger text-weight-bold">X</button>
-        </li>
-      </ul>
-    </div>
+    <TodoList :todos="todos" :delete-todo="deleteTodo"></TodoList>
   </div>
 </template>

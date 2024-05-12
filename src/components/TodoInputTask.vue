@@ -35,6 +35,11 @@ defineProps({
 </template>
 
 <style scoped>
+.form-control:focus {
+  border-color: #333;
+  box-shadow: inset 0 0 1px #333, 0 0 8px #333;
+}
+
 @media (min-width: 992px) {
   .container {
     width: 50vw;
