@@ -61,7 +61,7 @@ function deleteTodo(index) {
 
 <template>
   <div
-    class="vw-100 vh-100"
+    class="fullScreen"
     :class="`bg-${colorTheme.themeClr} text-${colorTheme.textClr}`"
   >
     <Header :color-theme="colorTheme" :toggle-theme="toggleTheme"></Header>
@@ -74,3 +74,10 @@ function deleteTodo(index) {
     <TodoList :todos="todos" :delete-todo="deleteTodo"></TodoList>
   </div>
 </template>
+
+<style>
+.fullScreen {
+  min-height: 100vh;
+  min-width: 100vw;
+}
+</style>
