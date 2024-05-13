@@ -49,8 +49,12 @@ function addTodo(todoInputText) {
     return;
   }
 
-  todos.push({ text: todoInputText });
+  todos.push({ text: todoInputText, finished: false });
   setTodos();
+}
+
+function isFinished(index) {
+  todos[index].finished = !todos[index].finished;
 }
 
 function deleteTodo(index) {
@@ -71,7 +75,11 @@ function deleteTodo(index) {
       :add-todo="addTodo"
     ></TodoInputTask>
 
-    <TodoList :todos="todos" :delete-todo="deleteTodo"></TodoList>
+    <TodoList
+      :todos="todos"
+      :is-finished="isFinished"
+      :delete-todo="deleteTodo"
+    ></TodoList>
   </div>
 </template>
 
