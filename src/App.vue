@@ -55,6 +55,7 @@ function addTodo(todoInputText) {
 
 function isFinished(index) {
   todos[index].finished = !todos[index].finished;
+  setTodos();
 }
 
 function deleteTodo(index) {
